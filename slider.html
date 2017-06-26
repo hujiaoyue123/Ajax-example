@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>slider</title>
+    <style type="text/css">
+        body, p, img, dl, dt, dd, ul, ol, h1, h2, h3, h4, h5, h6 {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            position: relative;
+            font: 12px/1.5 Simsun, Arial;
+            color: #666;
+            text-align: left;
+            background: #000;
+        }
+
+        ul, ol {
+            list-style: none;
+        }
+
+        img {
+            border: 0 none;
+        }
+
+        input, select {
+            vertical-align: middle;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        s, em, i {
+            font-style: normal;
+            text-decoration: none;
+        }
+
+        a {
+            outline: none;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .clear {
+            *zoom: 1;
+        }
+
+        .clear:after {
+            clear: both;
+            content: ".";
+            display: block;
+            height: 0;
+            overflow: hidden;
+            visibility: hidden;
+            zoom: 1;
+        }
+
+        .slideBox {
+            position: relative;
+            width: 600px;
+            height: 300px;
+            overflow: hidden;
+        }
+
+        .slideBox ul.items {
+            position: absolute;
+            width: 8000px;
+            height: 300px;
+        }
+
+        .slideBox ul.items li {
+            /*position: absolute;*/
+            width: 600px;
+            height: 300px;
+            float: left;
+            /*display: none;*/
+        }
+
+        .slideBox .arrows .arrow-left {
+            background: url(images/sprite-arrow-prev.png) no-repeat;
+            width: 22px;
+            height: 32px;
+            position: absolute;
+            left: 10px;
+            top: 110px;
+        }
+
+        .slideBox .arrows .arrow-right {
+            background: url(images/sprite-arrow-next.png) no-repeat;
+            width: 22px;
+            height: 32px;
+            position: absolute;
+            right: 10px;
+            top: 110px;
+        }
+
+        .slideBox .dots {
+            position: absolute;
+            text-align: center;
+            bottom: 20px;
+            width: 100%;
+        }
+
+        .slideBox .dots a {
+            display: inline-block;
+            padding: 5px;
+            background-color: ghostwhite;
+            margin-left: 5px;
+            border-radius: 50%;
+        }
+
+        .slideBox .dots a.curr {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div id="slide" class="slideBox">
+    <ul class="items J-items">
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/1.jpg">
+            </a>
+        </li>
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/2.jpg">
+            </a>
+        </li>
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/3.jpg">
+            </a>
+        </li>
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/4.jpg">
+            </a>
+        </li>
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/5.jpg">
+            </a>
+        </li>
+    </ul>
+    <div class="arrows">
+        <a class="arrow-left J-arrow-left" href="javascript:;" target="_self"></a>
+        <a class="arrow-right J-arrow-right" href="javascript:;" target="_self"></a>
+    </div>
+    <div class="dots">
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+    </div>
+</div>
+<div id="slide2" class="slideBox">
+    <ul class="items J-items">
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/1.jpg">
+            </a>
+        </li>
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/2.jpg">
+            </a>
+        </li>
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/3.jpg">
+            </a>
+        </li>
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/4.jpg">
+            </a>
+        </li>
+        <li>
+            <a href="#" target="_blank">
+                <img src="http://demo.sc.chinaz.com/Files/DownLoad/webjs1/201304/jiaoben828/img/5.jpg">
+            </a>
+        </li>
+    </ul>
+    <div class="arrows">
+        <a class="arrow-left J-arrow-left" href="javascript:;" target="_self"></a>
+        <a class="arrow-right J-arrow-right" href="javascript:;" target="_self"></a>
+    </div>
+    <div class="dots">
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+        <a href="#"></a>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+    $(function () {
+        function Slide(opts) {
+            this.init(opts);//自动调用构造函数
+        }
+        Slide.prototype = {
+            $dots: null,
+            $slide: null,
+            $arrowLeft: null,
+            $arrowRight: null,
+            $li: null,
+            $items: null,//获取ul
+            index: 0,
+            timeoutId: 0,
+            speed: 2000,
+            delay: 3000,
+            autoPlay: true,
+            callback:$.noop,//空函数
+            init: function (opts) {
+                var _this = this;
+                _this.$slide = opts.target;
+                _this.$arrowLeft = _this.$slide.find('.J-arrow-left');
+                _this.$arrowRight = _this.$slide.find('.J-arrow-right');
+                _this.$items = _this.$slide.find('.J-items');
+                _this.$li = _this.$items.find('li');
+//                _this.index = opts.index||0;//当前展示图片的下标
+//                _this.speed = opts.speed||2000;//||是赋默认值
+//                _this.delay = opts.delay||3000;
+//                _this.autoPlay = opts.autoPlay||true;
+//                _this.callback = opts.callback||$.noop;
+                _this.$dots = _this.$slide.find('.dots a');
+                $.extend(_this,opts);//合并
+                _this.copyLi();
+                _this.change(_this.index, false);
+
+                console.log('autoPlay'+_this.autoPlay);
+                if (_this.autoPlay) {//自动播
+                    console.log('ppp');
+                    _this.autoMove();
+                }
+                _this.addEvents();
+            },
+
+            copyLi: function () {
+                var _this = this;
+                var $newLi = _this.$li.eq(0).clone();
+                _this.$items.append($newLi);
+                _this.$li = _this.$items.find('li');//更新li 从5到6
+            },
+            addEvents: function () {
+                var _this = this;
+                _this.$arrowLeft.click(function () {//传入一个回调函数
+                    _this.move('left');
+                });
+                _this.$arrowRight.click(function () {
+                    _this.move('right');
+                });
+                _this.$dots.click(function (e) {
+                    var index = $(this).index();//this是原生 用$转成jQuery
+                    _this.change(index, false);
+                    console.log(index);
+                })
+            },
+            move: function (direction) {//只负责控制左右移动一次
+                var _this = this;
+                if (direction == 'left') {
+                    if (_this.index == 0) {//瞬间到最后一张
+                        _this.change(5, false);//
+                    }
+                    _this.index--;
+                } else {
+                    _this.index++;
+                }
+                _this.change(_this.index, true);
+            },
+            autoMove: function () {
+                var _this = this;
+                console.log('VV');
+                _this.timeoutId = setTimeout(function () {
+                    _this.move('right');
+                }, _this.delay);
+            },
+            change: function (index, needAnimation) {//更新index
+                var _this = this;
+                _this.index = index;
+                if (_this.index < 0) {
+                    _this.index = _this.$li.length - 1;
+                }
+                if (_this.index > _this.$li.length - 1) {
+                    _this.index = 0;
+                }
+                clearTimeout(_this.timeoutId);
+                console.log('aaa');
+                _this.$dots.removeClass();//移除所有高光的点
+                if(_this.index==5){//解决右移点点亮
+                    _this.$dots.eq(0).addClass('curr');
+                }else{
+                    _this.$dots.eq(_this.index).addClass('curr');
+                }
+                if (needAnimation) {
+                    _this.$items.stop().animate({'marginLeft': _this.$li.width() * (-_this.index)},//finish stop
+                        _this.speed, function () {
+                            console.log('@@');
+                            if (_this.index == 5) {//瞬间回到第一张
+                                _this.change(0, false);//
+                                console.log('QQ');
+                            }
+                            if (_this.autoPlay) {//自动播
+                                _this.autoMove();
+                            }
+                        })
+                } else {
+                    _this.$items.stop().css('marginLeft', _this.$li.width() * (-_this.index));//finish把动画过程立即结束
+                }
+                if(_this.index<5){
+                    _this.callback(_this.index);
+                }
+            },
+        };
+        var slide = new Slide({
+            target: $('#slide'),
+            speed: 1000,
+            delay: 5000,
+            autoPlay: true,
+            index: 0,
+            callback:function (index) {//回调函数
+                if(index==4){
+                    $('body').css('background','red');
+                }
+            }
+        });
+//        var slide2 = new Slide({
+//            target: $('#slide2'),
+//            speed: 1000,
+//            delay: 3000,
+//            index: 1,
+//            autoPlay: true,
+//            callback:function (index) {
+//            }
+//        });
+    });
+</script>
+</body>
+</html>

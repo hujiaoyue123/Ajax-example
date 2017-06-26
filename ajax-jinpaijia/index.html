@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>淘宝ajax数据调用实例-静态页面</title>
+    <link rel="stylesheet" href="css/common.css">
+    <style type="text/css">
+        body {
+            background-color: #FFC411;
+        }
+
+        .ZG_body {
+            width: 1000px;
+            margin: 0 auto;
+        }
+
+        .ZG_item {
+            width: 243px;
+            height: 147px;
+            margin: 0 6px 6px 0;
+            background: #FFF;
+            float: left;
+            position: relative;
+        }
+
+        .ZG_item a {
+            display: block;
+            text-decoration: none;
+        }
+
+        .ZG_item .ZG_text {
+            width: 96px;
+            height: 147px;
+            float: left;
+            overflow: hidden;
+        }
+
+        .ZG_item .ZG_text .ZG_text_title {
+            width: 80px;
+            margin: 10px auto 0;
+            overflow: hidden;
+            font-size: 13px;
+            height: 36px;
+            line-height: 18px;
+            color: #000;
+        }
+
+        .ZG_item .ZG_text .ZG_jpj {
+            width: 42px;
+            height: 16px;
+            line-height: 16px;
+            background: #FA372D;
+            border-radius: 1px;
+            font-size: 12px;
+            text-align: center;
+            color: #FFF;
+            margin: 0 0 0 10px;
+        }
+
+        .ZG_item .ZG_text .ZG_nowprice {
+            height: 24px;
+            line-height: 24px;
+            overflow: hidden;
+            text-indent: 10px;
+        }
+
+        .ZG_item .ZG_text .ZG_nowprice .ZG_current_price {
+            width: 114px;
+            line-height: 28px;
+            color: #FF4C4D;
+            font-size: 16px;
+            overflow: hidden;
+            font-weight: 700;
+        }
+
+        .ZG_item .ZG_text .ZG_nowprice .ZG_current_price span {
+            font-size: 10px;
+        }
+
+        .ZG_item .ZG_text .ZG_price {
+            text-indent: 10px;
+            height: 14px;
+            font-size: 10px;
+            line-height: 14px;
+            color: #A0A0A0;
+            text-decoration: line-through;
+        }
+
+        .ZG_item .ZG_text .ZG_qu {
+            width: 70px;
+            height: 28px;
+            margin: 6px 0 0 10px;
+        }
+
+        .ZG_item .ZG_img {
+            width: 147px;
+            height: 147px;
+            float: left;
+        }
+
+        .ZG_item_bg {
+            background: blueviolet;
+        }
+    </style>
+</head>
+<body>
+
+<!--列表的父容器-->
+<div class="ZG_body cf">
+</div>
+<script src="js/jquery.js"></script>
+<script src="js/template.js"></script>
+<script>
+    $(function () {
+
+        //调用ajax开始
+        var template = '\
+        {macro showCurrentPrice(currentPrice)}\
+         {if item.item_current_price>1000}\
+            <p class="ZG_current_price"><span>¥</span>${item.item_current_price}</p>\
+            {elseif item.item_current_price>500}\
+             <p class="ZG_current_price" style="color: #5FFF5B"><span>¥</span>${currentPrice}</p>\
+             {else}\
+             <p class="ZG_current_price" style="color: blue"><span>¥</span>${item.item_current_price}</p>\
+            {/if}\
+            {/macro}\
+        {for item in list}\
+        {var currentPrice=item.item_current_price}\
+        {var isBigCutPrice=(item.item_price-item.item_current_price>300)}\
+       <div class="ZG_item">\
+            <a href="#" target="_blank">\
+            <div class="ZG_text {if list.length-item_index<4} ZG_item_bg{/if}">\
+            <p class="ZG_text_title">{if isBigCutPrice}【大减价】{/if} ${item.item_title|default:"xxx"|capitalize}</p>\
+        <div class="ZG_jpj">{if item.item_price<1000}金牌价{else}抢购价{/if}</div>\
+            <div class="ZG_nowprice">\
+            ${showCurrentPrice(currentPrice)}\
+            </div>\
+            <p class="ZG_price"><span>¥</span>${item.item_price|toFixed:1}</p>\
+        <img class="ZG_qu" width="70" height="28" src="//img.alicdn.com/tps/TB1gLpPLXXXXXbvaXXXXXXXXXXX-70-28.jpg">\
+            </div>\
+            <img class="ZG_img" width="230" height="230" src="${item.item_pic}">\
+            </a>\
+            </div>\
+            {forelse}\
+            <div>该活动已结束，你来晚了</div>\
+        {/for}';
+        var $ZGBody = $('.ZG_body');
+        $.ajax({
+            url: "https://www.taobao.com/go/rgn/sys/xctrl/dispatch.php",//ajax调用的接口地址
+            dataType: 'jsonp',//定义请求的数据类型
+            jsonpCallback: 'kkk',
+            data: {//发送给服务器的数据
+                murl: 'http://tce.taobao.com/api/mget.htm',
+                src: 'pc',//约定的数据参数，调用来源
+                tce_sid: 827753 //约定的数据参数，sid。 另外提供活动页中另外一些楼层sid供大家练习 827788,834044,827815,827816
+            },
+            success: function (result) {
+                //操作Dom 把数据拼接好 放入页面中展示
+                if (result.success) {//成功处理
+                    var data = result.result;
+                    var list = data['827753'].result;
+                    var obj={list: list};
+//                    list=[];
+                    list[0].item_title=undefined;
+                    obj._MODIFIERS={//自定义修饰符
+                        toFixed: function(value, num) {
+                            return parseFloat(value).toFixed(num)
+                        }
+                    };
+                    console.log(obj);
+                    var html2 = template.process(obj);
+                    $ZGBody.html(html2);//把拼接好的代码放入$ZGBody标签中
+                } else {
+                    alert('出错了，请刷新页面')
+                }
+            }
+        })
+    })
+
+
+</script>
+</body>
+</html>

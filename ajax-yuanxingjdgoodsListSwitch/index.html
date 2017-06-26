@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+
+<div class="goods-list goods-list1 J-goods-list1">
+</div>
+
+<script type="text/javascript" src="js/jquery.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+<script>
+    $(function () {
+        function GoodsList(opts) {
+            this.init(opts);
+        }
+
+        GoodsList.prototype = {
+            $goodsList: null,
+            $JPrevBtn: null,
+            $JNextBtn: null,
+            $ul: null,
+            $li: null,
+            index: 0,//首页的第一个元素的下标
+            pageSize: 6,
+            init: function (opt) {
+                var _this = this;
+                _this.$goodsList = opt.target;
+                _this.$pageSize = opt.pageSize;
+
+                _this.initDom();
+                _this.bindEvent();
+                _this.getData();
+            },
+            initDom:function () {
+                var _this=this;
+                var html='<ul></ul>\
+                    <div class="btns">\
+                    <a href="javascript:;" class="prev-btn btn J-prev-btn">&lt;</a>\
+                    <a href="javascript:;" class="next-btn btn J-next-btn">&gt;</a>\
+                    </div>';
+                _this.$goodsList.html(html);
+                _this.$ul = _this.$goodsList.find('ul');
+                _this.$JPrevBtn = _this.$goodsList.find('.J-prev-btn');
+                _this.$JNextBtn = _this.$goodsList.find('.J-next-btn');
+            },
+            bindEvent: function () {
+                var _this = this;
+                _this.$JPrevBtn.click(function () {
+                    _this.change(_this.index - _this.$pageSize);//0-6
+
+                });
+                _this.$JNextBtn.click(function () {
+                    _this.change(_this.index + _this.$pageSize);//0+6
+                });
+            },
+            getData:function () {
+                var _this=this;
+                $.ajax({
+                    url: "http://rec.www.mi.com/guesslike/get",
+                    dataType:'jsonp',
+                    jsonpCallback:'kkk',
+                    data: {
+                        a: 2,
+                        c: 'AA',
+                        u: '1494819253336_1890'
+                    },
+                    success: function(result){
+                        var data=result.r;
+                        _this.setData(data);
+                    }
+                });
+            },
+            setData:function (data) {
+                var html='<ul>';
+                var _this=this;
+                for(var i in data){
+                    html+='\
+                <li>\
+                    <div class="goods_intro_wrapper">\
+                        <a href="#"><img src="//i1.mifile.cn/a1/'+data[i].i+'?width=140&amp;height=140"></a>\
+                        <p class="goods_intro_sale">\
+                        <span><em>'+data[i].l+'人好评</em></span>\
+                    <i class="goods_intro_sale_arrow"></i>\
+                        </p>\
+                        <a href="" class="goods_titles">'+data[i].n+'</a>\
+                    <p class="goods_intro_price">\
+                        <span>'+data[i].p+'元</span>\
+                    </p>\
+                    </div>\
+                    </li>';
+                }
+                _this.$ul.html(html);
+                _this.$li = _this.$ul.find('li');
+                _this.$ul.width(_this.$li.length*_this.$li.outerWidth(true));
+            },
+            change: function (index) {
+                var _this = this;
+                if (index < 0) {
+                    index = 0
+                }
+                if (index > _this.$li.length - _this.$pageSize) {
+                    index=_this.$li.length- _this.$pageSize;//
+//                    index = Math.floor(_this.$li.length / _this.$pageSize) * _this.$pageSize;
+                }
+                _this.index = index;//更新下标
+                console.log('_this.index是' + _this.index);
+                console.log('index是' + index);
+                _this.$ul.animate({marginLeft: -index * _this.$li.outerWidth(true)}, 700, 'easeOutBack');//outerWidth包括li的margin easeOutBack是github jQuery的库缓冲
+            }
+        }
+        var goodList1 = new GoodsList({
+            target: $('.J-goods-list1'),
+            pageSize: 4
+        })
+    })
+</script>
+</body>
+</html>

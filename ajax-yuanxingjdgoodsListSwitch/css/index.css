@@ -1,0 +1,93 @@
+.goods-list {
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+.goods-list1{
+    width: 680px;
+}
+.goods-list2{
+    width: 1020px;
+}
+.goods-list ul {
+    /*width: 3600px;*/
+}
+.goods_intro_sale{
+    background: #f0efef;
+    padding: 0 10px;
+    height: 26px;
+    line-height: 26px;
+    text-align: left;
+    color: #666;
+}
+.goods-list ul li {
+    float: left;
+    width: 160px;
+    margin-right: 10px;
+    padding: 28px 0;
+}
+
+.goods-list ul li img {
+    width: 100%;
+    height: 160px;
+}
+.goods-list ul li .goods_intro_sale span{
+    color: #fc1934;
+    font-weight: 700;
+    margin-left: 6px;
+}
+.goods-list ul li .goods_intro_sale{
+    position: relative;
+}
+.goods-list ul li .goods_intro_sale .goods_intro_sale_arrow{
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    margin-left: -6px;
+    top: -10px;
+    border-left:6px solid transparent ;
+    border-right:6px solid transparent ;
+    border-bottom:6px solid #f0efef ;
+    border-top: 6px solid transparent;
+}
+.goods-list ul li .goods_titles{
+    display: block;
+    text-decoration: none;
+    color: #999;
+    padding: 8px 0 6px;
+    height:26px;
+}
+.goods-list ul li .goods_titles:hover{
+    color: #fc1934;
+}
+.goods-list ul li .goods_intro_price{
+    font-size: 18px;
+    text-align: left;
+    color: #fc1934;
+}
+
+
+.goods-list .btn {
+    position: absolute;
+    top: 50%;
+    margin-top: -30px;
+    display: block;
+    width: 24px;
+    height: 60px;
+    line-height: 60px;
+    background: gray;
+    background: rgba(0,0,0,.2);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#32000000,endColorstr=#32000000);
+    -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#32000000,endColorstr=#32000000);
+    text-align: center;
+    font-size: 24px;
+    font-weight: 400;
+    font-family: simsun;
+    color: #fff;
+    text-decoration: none;
+}
+
+.goods-list .next-btn {
+    right: 0;
+}
